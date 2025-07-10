@@ -17,7 +17,7 @@ struct Data {
   byte ch3;
   byte ch4;
 };
-Data myData;
+Data data;
 
 // declare OLED display 
 Adafruit_SSD1306 display(OLED_RESET);
@@ -37,10 +37,10 @@ void setup()
   radio.openWritingPipe(address);
   radio.setPALevel(RF24_PA_MIN);
 
-  myData.ch1 = 0;
-  myData.ch2 = 0;
-  myData.ch3 = 0;
-  myData.ch4 = 0;
+  data.ch1 = 0;
+  data.ch2 = 0;
+  data.ch3 = 0;
+  data.ch4 = 0;
 }
 
 void loop()
@@ -48,24 +48,24 @@ void loop()
   display.clearDisplay();
 
   // map analog joy stick values
-  myData.ch1 = 255 - map(analogRead(A0), 0, 1024, 0, 255);
-  myData.ch2 = map(analogRead(A1), 0, 1024, 0, 255);
-  myData.ch3 = map(analogRead(A7), 0, 1024, 0, 255);
-  myData.ch4 = 255 - map(analogRead(A6), 0, 1024, 0, 255);
+  data.ch1 = 255 - map(analogRead(A0), 0, 1024, 0, 255);
+  data.ch2 = map(analogRead(A1), 0, 1024, 0, 255);
+  data.ch3 = map(analogRead(A7), 0, 1024, 0, 255);
+  data.ch4 = 255 - map(analogRead(A6), 0, 1024, 0, 255);
 
   // write to radio address
-  radio.write(&myData, sizeof(Data));
+  radio.write(&data, sizeof(Data));
   
   //configure and write mapped joy stick values to display
   display.setTextSize(1);
   display.setTextColor(WHITE);
   display.setCursor(0,0);
 
-  display.print("LV: "); display.print(myData.ch2); 
-  display.print(" LH: "); display.print(myData.ch1);
+  display.print("LV: "); display.print(data.ch2); 
+  display.print(" LH: "); display.print(data.ch1);
   display.println();
-  display.print("RV: "); display.print(myData.ch4);
-  display.print(" RH: "); display.print(myData.ch3);
+  display.print("RV: "); display.print(data.ch4);
+  display.print(" RH: "); display.print(data.ch3);
   display.println();
   
   display.display();
